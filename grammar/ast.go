@@ -52,6 +52,7 @@ type MatchOperator int
 
 const (
 	MatchEqual MatchOperator = iota
+	MatchLessThan
 	MatchNotEqual
 	MatchIn
 	MatchNotIn
@@ -65,6 +66,8 @@ func (op MatchOperator) String() string {
 	switch op {
 	case MatchEqual:
 		return "Equal"
+	case MatchLessThan:
+		return "Less Than"
 	case MatchNotEqual:
 		return "Not Equal"
 	case MatchIn:

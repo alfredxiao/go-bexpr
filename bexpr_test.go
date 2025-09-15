@@ -19,7 +19,7 @@ func TestCreateEvaluator(t *testing.T) {
 
 	tests := map[string]testCase{
 		"basic": {
-			expression: "foo = 3",
+			expression: "foo == 3",
 		},
 	}
 

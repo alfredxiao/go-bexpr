@@ -37,12 +37,35 @@ func primitiveEqualityFn(kind reflect.Kind) func(first interface{}, second refle
 	}
 }
 
+func primitiveLessThanFn(kind reflect.Kind) func(first interface{}, second reflect.Value) bool {
+	switch kind {
+	case reflect.Bool:
+		return doEqualBool
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		return doLessThanInt64
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+		return doEqualUint64
+	case reflect.Float32:
+		return doEqualFloat32
+	case reflect.Float64:
+		return doEqualFloat64
+	case reflect.String:
+		return doEqualString
+	default:
+		return nil
+	}
+}
+
 func doEqualBool(first interface{}, second reflect.Value) bool {
 	return first.(bool) == second.Bool()
 }
 
 func doEqualInt64(first interface{}, second reflect.Value) bool {
 	return first.(int64) == second.Int()
+}
+
+func doLessThanInt64(first interface{}, second reflect.Value) bool {
+	return first.(int64) < second.Int()
 }
 
 func doEqualUint64(first interface{}, second reflect.Value) bool {
@@ -94,6 +117,19 @@ func doMatchMatches(expression *grammar.MatchExpression, value reflect.Value) (b
 func doMatchEqual(expression *grammar.MatchExpression, value reflect.Value) (bool, error) {
 	// NOTE: see preconditions in evaluategrammar.MatchExpressionRecurse
 	eqFn := primitiveEqualityFn(value.Kind())
+	if eqFn == nil {
+		return false, errors.New("unable to find suitable primitive comparison function for matching")
+	}
+	matchValue, err := getMatchExprValue(expression, value.Kind())
+	if err != nil {
+		return false, fmt.Errorf("error getting match value in expression: %w", err)
+	}
+	return eqFn(matchValue, value), nil
+}
+
+func doMatchLessThan(expression *grammar.MatchExpression, value reflect.Value) (bool, error) {
+	// NOTE: see preconditions in evaluategrammar.MatchExpressionRecurse
+	eqFn := primitiveLessThanFn(value.Kind())
 	if eqFn == nil {
 		return false, errors.New("unable to find suitable primitive comparison function for matching")
 	}
@@ -339,6 +375,8 @@ func evaluateMatchExpression(expression *grammar.MatchExpression, datum interfac
 	switch expression.Operator {
 	case grammar.MatchEqual:
 		return doMatchEqual(expression, rvalue)
+	case grammar.MatchLessThan:
+		return doMatchLessThan(expression, rvalue)
 	case grammar.MatchNotEqual:
 		result, err := doMatchEqual(expression, rvalue)
 		if err == nil {
