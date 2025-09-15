@@ -38,6 +38,7 @@ func primitiveEqualityFn(kind reflect.Kind) func(first interface{}, second refle
 }
 
 func primitiveLessThanFn(kind reflect.Kind) func(first interface{}, second reflect.Value) bool {
+	println(fmt.Sprintf("kind: %v", kind))
 	switch kind {
 	case reflect.Bool:
 		return doEqualBool
@@ -50,6 +51,7 @@ func primitiveLessThanFn(kind reflect.Kind) func(first interface{}, second refle
 	case reflect.Float64:
 		return doEqualFloat64
 	case reflect.String:
+		println("yada less than string")
 		return doEqualString
 	default:
 		return nil
