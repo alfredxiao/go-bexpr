@@ -27,9 +27,11 @@ func primitiveLessThanFn(kind reflect.Kind) func(first interface{}, second refle
 }
 
 func doLessThanInt64(first interface{}, second reflect.Value) bool {
+	println(fmt.Sprintf("first: %v, second: %v", first, second))
 	return second.Int() < first.(int64)
 }
 
 func doLessThanUint64(first interface{}, second reflect.Value) bool {
+	println(fmt.Sprintf("first: %v, second: %v", first, second))
 	return second.Uint() < first.(uint64)
 }
