@@ -116,10 +116,6 @@ MatchValueOpSelector "match" <- value:Value operator:(MatchIn / MatchNotIn) sele
    return false, errors.New("Invalid selector")
 }
 
-MatchEqual <- _? "==" _? {
-   return MatchEqual, nil
-}
-
 MatchEqual <- _? "=" _? {
    return MatchEqual, nil
 }
