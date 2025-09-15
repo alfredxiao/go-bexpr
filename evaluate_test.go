@@ -290,6 +290,7 @@ var evaluateTests map[string]expressionTest = map[string]expressionTest{
 				return v
 			}},
 			{expression: "Nested.Map.foo == bar", result: true, benchQuick: true},
+			{expression: "Nested.Map.foo < bar", result: true, benchQuick: true},
 			{expression: "Nested.Map.foo contains ba", result: true, benchQuick: true},
 			{expression: "Nested.Map.foo == baz", result: false},
 			{expression: "Nested.Map is not empty", result: true},

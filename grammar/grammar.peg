@@ -102,7 +102,7 @@ ParenthesizedExpression "grouping" <- "(" _? expr:OrExpression _? ")" {
 
 MatchExpression "match" <- MatchSelectorOpValue / MatchSelectorOp / MatchValueOpSelector
 
-MatchSelectorOpValue "match" <- selector:Selector operator:(MatchEqual / MatchNotEqual / MatchContains / MatchNotContains / MatchMatches / MatchNotMatches) value:Value {
+MatchSelectorOpValue "match" <- selector:Selector operator:(MatchEqual / MatchLessThan/ MatchNotEqual / MatchContains / MatchNotContains / MatchMatches / MatchNotMatches) value:Value {
    return &MatchExpression{Selector: selector.(Selector), Operator: operator.(MatchOperator), Value: value.(*MatchValue)}, nil
 }
 
