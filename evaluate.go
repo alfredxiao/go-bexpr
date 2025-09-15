@@ -12,7 +12,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hashicorp/go-bexpr/grammar"
+	"github.com/alfredxiao/go-bexpr/grammar"
 	"github.com/mitchellh/pointerstructure"
 )
 
